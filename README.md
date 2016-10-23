@@ -30,6 +30,8 @@ echo "func someName(foo bar: Baz..." | needless
 `needless` will print out function names with needless words and suggest an
 alternative.
 
+Run `needless -h` for more details, or read the next section.
+
 ### Options ###
 
 Several output format are included for different use scenarios. They make this

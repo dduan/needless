@@ -217,31 +217,56 @@ let formatters: [String: SuggestionFormatter] = [
   "-readable": readableFormatter,
 ]
 
-let options = CommandLine.arguments.filter { $0.hasPrefix("-") }
-let files = CommandLine.arguments.filter { !$0.hasPrefix("-") }
-
-let formatter: SuggestionFormatter = {
-  let found = options.flatMap { formatters[$0] }
-  return found.isEmpty ? readableFormatter : found[0]
-}()
-
-let diffMode = options.contains("-diff")
-
-var count = 0
-if files.count <= 1 {
-  while let line = readLine() {
-    processLine(path: nil, line: line, lineNumber: count, formatter: formatter,
-      diffMode: diffMode)
-    count += 1
+func main() {
+  let options = CommandLine.arguments.filter { $0.hasPrefix("-") }
+  if options.contains("-h") || options.contains("--help") {
+    print([
+      "Find needless words that merely repeats type information in your Swift function names.",
+      "",
+      "Useage: needless [options] file1 [file2 file3 ...]",
+      "",
+      "options:",
+      "\t-readable print result in a human readable format",
+      "\t-Xcode    print result in clang/swiftc style errors",
+      "\t-dollar   print result in '$' separated fields, specifically:",
+      "\t          [description]$[path]$[line number]$[column number]$[original name]$[suggested name]",
+      "\t-diff     only check lines that's an addition in diff/patch formats",
+      "\t-h --help print this message.",
+    ].joined(separator: "\n"))
+    return
   }
-} else {
-  for path in files.suffix(from: 1) {
-    for line in try String(contentsOfFile: path)
-      .components(separatedBy: .newlines)
-    {
-      processLine(path: path, line: line, lineNumber: count,
+
+  let files = CommandLine.arguments.filter { !$0.hasPrefix("-") }
+
+  let formatter: SuggestionFormatter = {
+    let found = options.flatMap { formatters[$0] }
+    return found.isEmpty ? readableFormatter : found[0]
+  }()
+
+  let diffMode = options.contains("-diff")
+
+  var count = 0
+  if files.count <= 1 {
+    while let line = readLine() {
+      processLine(path: nil, line: line, lineNumber: count,
         formatter: formatter, diffMode: diffMode)
       count += 1
     }
+  } else {
+    for path in files.suffix(from: 1) {
+      do {
+        for line in try String(contentsOfFile: path)
+          .components(separatedBy: .newlines)
+        {
+          processLine(path: path, line: line, lineNumber: count,
+            formatter: formatter, diffMode: diffMode)
+          count += 1
+        }
+      } catch {
+        print("Error opening file \(path)")
+      }
+    }
   }
 }
+
+main()
