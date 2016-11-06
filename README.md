@@ -2,13 +2,13 @@
 
 To promote clear usage, the Swift API Design Guidelines advice that we [omit
 needless words][omit needless words] in function names. Words that *merely
-repeat* type information is specifically identified as needless.
+repeat* type information are specifically identified as needless.
 
-This is a tool that help you spot those words in your code base.
+This is a tool that helps you spot those words in your code base.
 
 ## Install ##
 
-Prerequisite: have Swift 3 installed in your system.
+Prerequisite: have Swift 3 installed on your system.
 
 1. Clone or download content of this repository.
 2. run `make`.
@@ -17,8 +17,8 @@ Prerequisite: have Swift 3 installed in your system.
 
 ### Basic ###
 
-The command `needless` can process text from STDIN or files specified in list of
-paths. The simpliest way to use it is one of the following:
+The command `needless` can process text from STDIN or files specified in a list of
+paths. The simplest way to use it is one of the following:
 
 ```
 needless path/to/file1.swift path/to/file2.swift
@@ -34,7 +34,7 @@ Run `needless -h` for more details, or read the next section.
 
 ### Options ###
 
-Several output format are included for different use scenarios. They make this
+Several output formats are included for different use scenarios. They make this
 command more useful when combined with other scripts/tools.
 
 * By default, `needless` prints output in a readable format:
@@ -70,7 +70,7 @@ command more useful when combined with other scripts/tools.
      IFS=$'\n' find . -name "*.swift" -exec needless -Xcode {} \;
      ```
 
-     (customize the cammand according to your needs. e.g. you may want to
+     (customize the command according to your needs. e.g. you may want to
      change the path `.` to `Sources` to avoid warnings for files in `Packages`
      or `Pods` folder).
   2. build your Xcode project.
@@ -99,8 +99,8 @@ command more useful when combined with other scripts/tools.
 
 The API guideline starts with "every word in a name should convey salient
 information at the use site". `needless` isn't AI with advanced natural
-language processing capabilities (yet?). In fact, it assumes you use camalCase
-in function names and merely trys to find problematic function names in a very
+language processing capabilities (yet?). In fact, it assumes you use camelCase
+in function names and merely tries to find problematic function names in a very
 mechanical (dumb) way. Its suggestions are often awkward/too aggressive. Always
 prioritize good human judgement please :)
 
