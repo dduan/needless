@@ -8,5 +8,4 @@ clean:
 	rm -rf .build
 
 uninstall:
-	rm -f /usr/local/needless
-
+	rm -f /usr/local/bin/needless
